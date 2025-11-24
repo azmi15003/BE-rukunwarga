@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const db = require('./config/database'); // <- ini yang kurang tadi
 
+// Routes
 const inhabitantRoutes = require('./routes/inhabitantRoutes');
 const kkRoutes = require('./routes/kkRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -12,6 +15,14 @@ const bannerRoutes = require('./routes/uploadBanner');
 const typeRoutes = require('./routes/typeRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 
+// Tes koneksi DB
+db.getConnection()
+  .then(() => {
+    console.log('Database connected');
+  })
+  .catch((err) => {
+    console.error('Failed to connect database:', err);
+  });
 
 const app = express();
 
@@ -21,8 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static untuk file upload (akses image)
-const path = require('path');
-
 // Contoh: http://localhost:4000/uploads/information/filename.png
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -44,7 +53,7 @@ app.get('/', (req, res) => {
 });
 
 // Jalankan server
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server berjalan di port ${PORT}`);
 });
