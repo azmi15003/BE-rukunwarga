@@ -15,6 +15,11 @@ const bannerRoutes = require('./routes/uploadBanner');
 const typeRoutes = require('./routes/typeRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 
+console.log('DB CONFIG FROM ENV:', {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  db: process.env.DB_NAME,
+});
 // Tes koneksi DB
 db.getConnection()
   .then(() => {
